@@ -1,0 +1,26 @@
+.dark .dark\:bg-google-gray {
+  background-color: #202126;
+}
+
+.dark .dark\:bg-card-gray {
+  background-color: #27282d;
+}
+.dark .dark\:bg-card-darker-gray {
+  background-color: #222227;
+}
+
+.dark .dark\:border-bottom-gray {
+  border-bottom-color: #1f2028;
+}
+
+.dark .dark\:bg-button-gray {
+  background-color: #31363e;
+}
+
+.dark .dark\:bg-button-darker-gray {
+  background-color: #222227;
+}
+
+.dark .dark\:hover\:bg-button-gray:hover {
+  background-color: #1d1d22;
+}
