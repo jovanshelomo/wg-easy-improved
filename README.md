@@ -1,6 +1,6 @@
 # WireGuard Easy
 
-This is the extended version of WeeJeWel/wg-easy with some improvement
+This is the extended version of `WeeJeWel/wg-easy` with some improvement
 
 You have found the easiest way to install & manage WireGuard on any Linux host!
 

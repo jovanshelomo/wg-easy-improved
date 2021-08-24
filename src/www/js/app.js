@@ -24,6 +24,8 @@ new Vue({
     qrcode: null,
 
     lastTransfer: new Map(),
+    useBit: localStorage.useBit === "true" || false,
+    highPrecisionDecimal: localStorage.highPrecisionDecimal === "true" || false,
 
     settings: null,
     darkTheme:
@@ -54,15 +56,17 @@ new Vue({
         //     client.name
         //   )}?d=blank`;
         // }
-        client.downloadSpeed = this.lastTransfer[client.id]?.timestamp
-          ? ((client.transferTx - this.lastTransfer[client.id]?.transferTx) *
+        client.downloadSpeed = this.lastTransfer.get(client.id)?.timestamp
+          ? ((client.transferTx -
+              this.lastTransfer.get(client.id)?.transferTx) *
               1000) /
-            (client.timestamp - this.lastTransfer[client.id]?.timestamp)
+            (client.timestamp - this.lastTransfer.get(client.id)?.timestamp)
           : 0;
-        client.uploadSpeed = this.lastTransfer[client.id]?.timestamp
-          ? ((client.transferRx - this.lastTransfer[client.id]?.transferRx) *
+        client.uploadSpeed = this.lastTransfer.get(client.id)?.timestamp
+          ? ((client.transferRx -
+              this.lastTransfer.get(client.id)?.transferRx) *
               1000) /
-            (client.timestamp - this.lastTransfer[client.id]?.timestamp)
+            (client.timestamp - this.lastTransfer.get(client.id)?.timestamp)
           : 0;
         this.lastTransfer.set(client.id, {
           transferTx: client.transferTx,
@@ -161,34 +165,36 @@ new Vue({
         ? document.documentElement.classList.add("dark")
         : document.documentElement.classList.remove("dark");
     },
+    toggleUseBit() {
+      this.useBit = !this.useBit;
+      localStorage.setItem("useBit", this.useBit);
+    },
+    toggleHighPrecisionDecimal() {
+      this.highPrecisionDecimal = !this.highPrecisionDecimal;
+      localStorage.setItem("highPrecisionDecimal", this.highPrecisionDecimal);
+    },
   },
   filters: {
     timeago: (value) => {
       return timeago().format(value);
     },
-    bytes: (bytes, decimals, kib, maxunit) => {
-      kib = kib || false;
-      if (bytes === 0) return "0 Bytes";
+    bytes: (bytes, maxunit) => {
+      let useBit = localStorage.useBit === "true" || false;
+      if (useBit) bytes *= 8;
+      let decimals =
+        localStorage.highPrecisionDecimal === "true" || false ? 6 : 2;
+      if (bytes === 0) {
+        return useBit ? "0 b" : "0 B";
+      }
       if (Number.isNaN(parseFloat(bytes)) && !Number.isFinite(bytes))
         return "Not a number";
-      const k = kib ? 1024 : 1000;
+      const k = 1000;
       const dm =
         decimals != null && !Number.isNaN(decimals) && decimals >= 0
           ? decimals
           : 2;
-      const sizes = kib
-        ? [
-            "Bits",
-            "KiB",
-            "MiB",
-            "GiB",
-            "TiB",
-            "PiB",
-            "EiB",
-            "ZiB",
-            "YiB",
-            "BiB",
-          ]
+      const sizes = useBit
+        ? ["b", "Kb", "Mb", "Gb", "Tb", "Pb", "Eb", "Zb", "Yb", "Bb"]
         : ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB", "BB"];
       let i = Math.floor(Math.log(bytes) / Math.log(k));
       if (maxunit !== undefined) {
@@ -222,7 +228,7 @@ new Vue({
       .then(async () => {
         const currentRelease = await this.api.getRelease();
         const latestRelease = await fetch(
-          "https://weejewel.github.io/wg-easy/changelog.json"
+          "https://raw.githubusercontent.com/jovanshelomo/wg-easy-improved/main/docs/changelog.json"
         )
           .then((res) => res.json())
           .then((releases) => {
