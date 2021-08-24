@@ -49,7 +49,7 @@ Run these commands to prepare and configure WireGuard.
 ```bash
 $ mkdir ~/.wg-easy
 $ cd ~/.wg-easy
-$ wget https://raw.githubusercontent.com/WeeJeWel/wg-easy/master/docker-compose.yml
+$ wget https://raw.githubusercontent.com/jovanshelomo/wg-easy-improved/master/docker-compose.yml
 $ vim docker-compose.yml
 ```
 
