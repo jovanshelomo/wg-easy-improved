@@ -4,14 +4,24 @@ services:
     environment:
       # ⚠️ Required:
       # Change this to your host's public address
-      - WG_HOST=raspberrypi.local
+      - WG_HOST=192.168.18.39
 
       # Optional:
+
+      # Allow api to directly communicate by this access key using "x-api-key" header
+      # - API_KEY=ABCDEFG
+
+      # hcaptcha
+      # - HCAPTCHA_SITE_KEY=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+      # - HCAPTCHA_SECRET=0xXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
       # - PASSWORD=foobar123
+      # - SERVER_DESCRIPTION=WG1
       # - WG_PORT=51820
       # - WG_DEFAULT_ADDRESS=10.8.0.x
       # - WG_DEFAULT_DNS=1.1.1.1
       # - WG_ALLOWED_IPS=192.168.15.0/24, 10.0.1.0/24
+
 
     image: jovanshelomo/wg-easy-improved
     container_name: wg-easy-improved
