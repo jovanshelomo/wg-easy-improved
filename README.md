@@ -17,6 +17,7 @@ You have found the easiest way to install & manage WireGuard on any Linux host!
 - Download a client's configuration file.
 - Statistics for which clients are connected.
 - Dark Theme.
+- API Call.
 
 ## Requirements
 
